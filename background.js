@@ -206,11 +206,15 @@ chrome.action.onClicked.addListener(async (tab) => {
 
 // 컨텍스트 메뉴 생성 (선택 사항)
 chrome.runtime.onInstalled.addListener(() => {
-    chrome.contextMenus.create({
-        id: 'searchInSmartStore',
-        title: '스마트스토어에서 "%s" 검색',
-        contexts: ['selection']
-    });
+    try {
+        chrome.contextMenus.create({
+            id: 'searchInSmartStore',
+            title: '스마트스토어에서 "%s" 검색',
+            contexts: ['selection']
+        });
+    } catch (error) {
+        console.log('컨텍스트 메뉴 생성 실패:', error);
+    }
 });
 
 // 컨텍스트 메뉴 클릭 처리
