@@ -1,0 +1,55 @@
+{
+  "manifest_version": 3,
+  "name": "스마트 스토어 파인더",
+  "version": "1.0.0",
+  "description": "네이버 스마트스토어에서 브랜드/키워드 자동 검색 기능을 제공하는 크롬 확장프로그램",
+  
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage"
+  ],
+  
+  "host_permissions": [
+    "*://smartstore.naver.com/*",
+    "*://search.shopping.naver.com/*"
+  ],
+  
+  "background": {
+    "service_worker": "background.js"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": [
+        "*://smartstore.naver.com/*",
+        "*://search.shopping.naver.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "스마트 스토어 파인더",
+    "default_icon": {
+      "16": "icons/icon16.svg",
+      "48": "icons/icon48.svg",
+      "128": "icons/icon128.svg"
+    }
+  },
+  
+  "icons": {
+    "16": "icons/icon16.svg",
+    "48": "icons/icon48.svg",
+    "128": "icons/icon128.svg"
+  },
+  
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*.svg"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
