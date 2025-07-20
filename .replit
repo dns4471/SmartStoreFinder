@@ -2,6 +2,7 @@ modules = ["nodejs-20", "python-3.11"]
 
 [nix]
 channel = "stable-24_05"
+packages = ["chromium"]
 
 [workflows]
 runButton = "Project"
@@ -17,7 +18,7 @@ args = "Chrome Extension Server"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "chrome_extension_test"
+args = "Chrome Extension Test"
 
 [[workflows.workflow]]
 name = "Chrome Extension Server"
@@ -29,12 +30,12 @@ args = "python3 -m http.server 5000"
 waitForPort = 5000
 
 [[workflows.workflow]]
-name = "chrome_extension_test"
+name = "Chrome Extension Test"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "google-chrome --load-extension=. --new-window"
+args = "chromium --load-extension=. --new-window --no-sandbox"
 
 [[ports]]
 localPort = 5000
