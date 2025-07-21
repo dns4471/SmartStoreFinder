@@ -8,7 +8,8 @@
     "activeTab",
     "tabs",
     "storage",
-    "contextMenus"
+    "contextMenus",
+    "alarms"
   ],
   
   "host_permissions": [
@@ -16,7 +17,7 @@
   ],
   
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background_simple.js"
   },
   
   "content_scripts": [
@@ -47,7 +48,7 @@
   
   "web_accessible_resources": [
     {
-      "resources": ["icons/*.svg"],
+      "resources": ["icons/*.png", "icons/*.svg"],
       "matches": ["<all_urls>"]
     }
   ]

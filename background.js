@@ -21,6 +21,17 @@ chrome.runtime.onInstalled.addListener((details) => {
     } else if (details.reason === 'update') {
         console.log('스마트 스토어 파인더가 업데이트되었습니다.');
     }
+    
+    // 컨텍스트 메뉴 생성
+    try {
+        chrome.contextMenus.create({
+            id: 'searchInSmartStore',
+            title: '스마트스토어에서 "%s" 검색',
+            contexts: ['selection']
+        });
+    } catch (error) {
+        console.log('컨텍스트 메뉴 생성 실패:', error);
+    }
 });
 
 // 메시지 리스너 설정
@@ -189,8 +200,8 @@ chrome.action.onClicked.addListener(async (tab) => {
     // 팝업이 정의되어 있으므로 일반적으로 실행되지 않지만,
     // 특정 페이지에서 팝업이 비활성화된 경우를 대비
     try {
-        // 현재 탭이 스마트스토어 페이지인 경우 직접 검색 실행 가능
-        if (isSmartStorePage(tab.url)) {
+        // 현재 탭이 네이버 페이지인 경우 직접 검색 실행 가능
+        if (isNaverPage(tab.url)) {
             console.log('스마트스토어 페이지에서 직접 실행 가능');
         } else {
             // 네이버 쇼핑으로 이동
@@ -203,18 +214,7 @@ chrome.action.onClicked.addListener(async (tab) => {
     }
 });
 
-// 컨텍스트 메뉴 생성 (선택 사항)
-chrome.runtime.onInstalled.addListener(() => {
-    try {
-        chrome.contextMenus.create({
-            id: 'searchInSmartStore',
-            title: '스마트스토어에서 "%s" 검색',
-            contexts: ['selection']
-        });
-    } catch (error) {
-        console.log('컨텍스트 메뉴 생성 실패:', error);
-    }
-});
+
 
 // 컨텍스트 메뉴 클릭 처리
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
