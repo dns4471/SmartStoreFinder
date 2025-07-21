@@ -89,13 +89,10 @@ async function getCurrentOrCreateTab() {
         // 현재 활성 탭 확인
         const [currentTab] = await chrome.tabs.query({ active: true, currentWindow: true });
         
-        // 네이버 스마트스토어 페이지인지 확인
-        const isSmartStore = currentTab.url && (
-            currentTab.url.includes('smartstore.naver.com') ||
-            currentTab.url.includes('search.shopping.naver.com')
-        );
+        // 네이버 페이지인지 확인
+        const isNaverPage = currentTab.url && currentTab.url.includes('.naver.com');
         
-        if (isSmartStore) {
+        if (isNaverPage) {
             return currentTab;
         } else {
             // 새 탭에서 네이버 쇼핑 페이지 열기

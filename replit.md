@@ -59,8 +59,7 @@ The application follows the standard Chrome Extension Manifest V3 architecture:
 ## External Dependencies
 
 ### Target Platforms
-- **Naver Smart Store** (`smartstore.naver.com/*`)
-- **Naver Shopping** (`search.shopping.naver.com/*`)
+- **All Naver Pages** (`*.naver.com/*`) - 확장된 도메인 지원으로 모든 네이버 서비스에서 작동
 
 ### Chrome APIs
 - **chrome.runtime**: Message passing and extension lifecycle

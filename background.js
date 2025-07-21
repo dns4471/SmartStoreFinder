@@ -113,7 +113,7 @@ async function getTabInfo(sendResponse) {
             id: activeTab.id,
             url: activeTab.url,
             title: activeTab.title,
-            isSmartStore: isSmartStorePage(activeTab.url)
+            isNaverPage: isNaverPage(activeTab.url)
         };
         
         sendResponse({ success: true, tabInfo });
@@ -138,20 +138,19 @@ async function openNewTab(url, sendResponse) {
     }
 }
 
-// 스마트스토어 페이지 여부 확인
-function isSmartStorePage(url) {
+// 네이버 페이지 여부 확인
+function isNaverPage(url) {
     if (!url) return false;
     
-    return url.includes('smartstore.naver.com') || 
-           url.includes('search.shopping.naver.com');
+    return url.includes('.naver.com');
 }
 
 // 탭 업데이트 이벤트 리스너
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     // 페이지 로딩 완료 시
     if (changeInfo.status === 'complete' && tab.url) {
-        // 스마트스토어 페이지인 경우 배지 제거
-        if (isSmartStorePage(tab.url)) {
+        // 네이버 페이지인 경우 배지 제거
+        if (isNaverPage(tab.url)) {
             chrome.action.setBadgeText({
                 text: '',
                 tabId: tabId
@@ -165,8 +164,8 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
     try {
         const tab = await chrome.tabs.get(activeInfo.tabId);
         
-        // 활성 탭이 스마트스토어 페이지가 아닌 경우 배지 제거
-        if (!isSmartStorePage(tab.url)) {
+        // 활성 탭이 네이버 페이지가 아닌 경우 배지 제거
+        if (!isNaverPage(tab.url)) {
             chrome.action.setBadgeText({
                 text: '',
                 tabId: activeInfo.tabId

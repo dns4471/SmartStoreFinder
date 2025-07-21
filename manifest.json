@@ -12,8 +12,7 @@
   ],
   
   "host_permissions": [
-    "*://smartstore.naver.com/*",
-    "*://search.shopping.naver.com/*"
+    "*://*.naver.com/*"
   ],
   
   "background": {
@@ -23,8 +22,7 @@
   "content_scripts": [
     {
       "matches": [
-        "*://smartstore.naver.com/*",
-        "*://search.shopping.naver.com/*"
+        "*://*.naver.com/*"
       ],
       "js": ["content.js"],
       "run_at": "document_end"

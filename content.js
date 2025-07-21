@@ -107,12 +107,17 @@ async function executeShoppingSearch(searchData) {
     
     // 검색창 찾기 (여러 셀렉터 시도)
     const searchInputSelectors = [
+        'input[data-testid="gnb-search-input"]',
         'input[name="query"]',
         'input[id="query"]',
         'input.search_input',
         '.search_input input',
         '#header input[type="text"]',
-        'input[placeholder*="검색"]'
+        'input[placeholder*="검색"]',
+        'input[aria-label*="검색"]',
+        '.SearchInput_search_input__X8qPp',
+        '.search_area input',
+        'input[type="search"]'
     ];
     
     let searchInput = null;
@@ -126,18 +131,28 @@ async function executeShoppingSearch(searchData) {
     }
     
     // 검색어 입력
+    console.log('검색창 찾음:', searchInput);
+    console.log('입력할 검색어:', searchQuery);
+    
     searchInput.focus();
     searchInput.value = '';
     
-    // 이벤트 시뮬레이션
-    const inputEvent = new Event('input', { bubbles: true });
-    const changeEvent = new Event('change', { bubbles: true });
+    // 직접 값 설정 후 이벤트 발생
+    searchInput.value = searchQuery;
     
-    // 타이핑 시뮬레이션
-    await typeText(searchInput, searchQuery);
+    // 다양한 이벤트 시뮬레이션
+    const events = [
+        new Event('input', { bubbles: true }),
+        new Event('change', { bubbles: true }),
+        new KeyboardEvent('keyup', { bubbles: true }),
+        new Event('blur', { bubbles: true }),
+        new Event('focus', { bubbles: true })
+    ];
     
-    searchInput.dispatchEvent(inputEvent);
-    searchInput.dispatchEvent(changeEvent);
+    events.forEach(event => searchInput.dispatchEvent(event));
+    
+    // 추가 확인을 위한 로그
+    console.log('입력 후 검색창 값:', searchInput.value);
     
     // 검색 버튼 찾기 및 클릭
     await clickSearchButton();
@@ -227,13 +242,17 @@ function typeText(element, text) {
 // 검색 버튼 클릭
 async function clickSearchButton() {
     const searchButtonSelectors = [
+        'button[data-testid="gnb-search-button"]',
         'button[type="submit"]',
         '.search_btn',
         '.btn_search',
         'button.search',
         '.search_area button',
         'button:has(.ico_search)',
-        '.search_input_wrap button'
+        '.search_input_wrap button',
+        '.SearchInput_search_btn__2EH6j',
+        'button[aria-label*="검색"]',
+        '.gnb_search button'
     ];
     
     let searchButton = null;
@@ -241,6 +260,8 @@ async function clickSearchButton() {
         searchButton = document.querySelector(selector);
         if (searchButton) break;
     }
+    
+    console.log('검색 버튼 찾기 결과:', searchButton);
     
     if (searchButton) {
         // 클릭 이벤트 시뮬레이션
@@ -254,11 +275,29 @@ async function clickSearchButton() {
         console.log('검색 버튼 클릭 완료');
     } else {
         // 버튼을 찾지 못하면 Enter 키 이벤트 발생
-        const searchInput = document.querySelector('input[name="query"], input[id="query"]');
+        const searchInput = document.querySelector('input[data-testid="gnb-search-input"], input[name="query"], input[id="query"]');
         if (searchInput) {
-            const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
+            searchInput.focus();
+            const enterEvent = new KeyboardEvent('keydown', { 
+                key: 'Enter', 
+                code: 'Enter',
+                keyCode: 13,
+                bubbles: true,
+                cancelable: true
+            });
             searchInput.dispatchEvent(enterEvent);
+            
+            // Form submit도 시도
+            const form = searchInput.closest('form');
+            if (form) {
+                form.submit();
+            }
             console.log('Enter 키로 검색 실행');
+        } else {
+            console.log('검색 입력창을 찾을 수 없어 URL 변경으로 검색 실행');
+            // 마지막 수단으로 URL 직접 변경
+            const encodedQuery = encodeURIComponent(searchQuery);
+            window.location.href = `https://search.shopping.naver.com/search/all?query=${encodedQuery}`;
         }
     }
     
