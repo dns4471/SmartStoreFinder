@@ -34,15 +34,15 @@
 ---
 
 ## 📦 설치 (예정)
-
-1. 크롬 확장 프로그램 개발자 모드에서 `manifest.json`이 포함된 폴더를 등록
+0. 압축파일 zip으로 다운받아. 폴더에 풀고.
+1. 크롬 확장 프로그램 개발자 모드에서  `manifest.json`이 포함된 폴더를 선택하면 크롬 확장 프로그램으로 등록이 됩니다.  
 2. 추후 Chrome Web Store에 등록 예정입니다
 
 ---
 
 ## 🧠 개발자
 
-- GitHub: [dns4471](https://github.com/dns4471)
+- GitHub: [dns4471](https://github.com/dns4471) 프로그래머 파이브 윤재만
 
 ---
 
